@@ -26,23 +26,45 @@ type Graph struct {
 	nbr_col int
 }
 
+// BLOCKING TODO: Handle bar color here w\ bar.color attr instead of coords.color
+// TODO:Color should be handled differently for sorted graphs
+// TODO Split in multiple file and split handle in 2 functions for clarity
 func create_graph(file string, sep string) (Graph) {
+	var sorted bool = true // TODO: Add sorted parameter and change color accordingly
 	var rows []string = strings.Split(file, "\n")
 	rows = rows[:len(rows)-1]
 	var g = Graph{}
-	g.nbr_col = len(rows)-1
-	for i, _ := range(rows) {
-		var row []string = strings.Split(rows[i], sep)
-		row = row[1:]
-		for _, val := range(row) {
-			var y, err = strconv.Atoi(val)
-			if err != nil {
-				fmt.Println("converison error:", err)
-				os.Exit(1)
+	
+	if sorted {
+		var row_nbr int = 0
+		var col_nbr int = 1
+		for row_nbr < len(rows) {
+			var row []string = strings.Split(rows[row_nbr], sep)
+			val, _ := strconv.Atoi(row[col_nbr])
+			var bar = Bar{x: row_nbr, y: val}
+			g.bars = append(g.bars, bar)
+			g.nbr_col = len(row)
+			row_nbr++
+			if row_nbr == len(rows) && col_nbr != len(row) - 1 {
+				row_nbr = 0
+				col_nbr++
 			}
-			var b = Bar{x: i, y: y}
-			g.bars = append(g.bars, b)
-		}	
+		}
+	} else {
+		for i, _ := range(rows) {
+			var row []string = strings.Split(rows[i], sep)
+			row = row[1:]
+			for _, val := range(row) {
+				var y, err = strconv.Atoi(val)
+				if err != nil {
+					fmt.Println("converison error:", err)
+					os.Exit(1)
+				}
+				var b = Bar{x: i, y: y}
+				g.bars = append(g.bars, b)
+				g.nbr_col = len(row)
+			}	
+		}
 	}
 	return g
 }
@@ -69,6 +91,7 @@ func bar_width(graph Graph, screen_w int) (int) {
 	return (screen_w - len(graph.bars)) / len(graph.bars)
 }
 
+// TODO: Weird size given by s.Size() need to look into it
 func bar_height(max_h int, screen_h int) (int) {
 	return (screen_h / max_h)+ (screen_h / 10)
 }
@@ -96,7 +119,7 @@ func emitStr(s tcell.Screen, style tcell.Style, coords []Coord) {
 	for _, coord := range coords {
 	style = tcell.StyleDefault.Foreground(tcell.GetColor(coord.color)).Background(tcell.GetColor(coord.color))
 		var comb []rune	
-		s.SetContent(coord.x, h - coord.y, rune(97), comb, style)
+		s.SetContent(coord.x, h - coord.y, rune(0), comb, style)
 	}
 }
 
@@ -124,6 +147,8 @@ func main() {
 	sc_w, sc_h := screen.Size()
 	var g Graph = create_graph(string(file), sep)
 	var max_h int = max_height(g)
+	fmt.Print("max_h: ", max_h)
+	fmt.Print("g: ", g)
 	var bar_h int = bar_height(max_h, sc_h)
 	var bar_w int = bar_width(g, sc_w)
 

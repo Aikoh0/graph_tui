@@ -41,3 +41,30 @@ func generate_coords(graph Graph, bar_h int, bar_w, int) {
 	}
 	fmt.Println(coords)
 }
+
+
+
+	var rows []string = strings.Split(file, "\n")
+    var g = Graph{}
+    rows = rows[:len(rows)-1]
+    g.nbr_col = len(rows)
+    
+    var row_nbr int = 0 
+    var col_nbr int = 1 
+    for row_nbr < len(rows) {
+        var row []string = strings.Split(rows[row_nbr], sep)
+        val, err := strconv.Atoi(row[col_nbr])
+        if err != nil {
+            fmt.Println(err)
+            os.Exit(1)
+        }
+        var bar = Bar{x: row_nbr, y: val}
+        g.bars = append(g.bars, bar)
+        row_nbr++
+        if row_nbr == len(rows) && col_nbr != len(row) - 1 { 
+            row_nbr = 0 
+            col_nbr++
+        }   
+    }   
+    fmt.Println(col_nbr)
+    return g
