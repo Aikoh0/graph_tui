@@ -32,19 +32,18 @@ func bar_width(graph Graph, screen_w int) (int) {
 
 // TODO: Weird size given by s.Size() need to look into it
 func bar_height(max_h int, screen_h int) (int) {
-	return (screen_h / max_h)+ (screen_h / 10)
+	return (screen_h / max_h)- (screen_h / 20)
 }
 
 
 func generate_coords(graph Graph, bar_h int, bar_w int) ([]Coord) {
 	var coords []Coord
-	color_names := []string{"maroon","green","olive","navy","purple","teal","silver","gray","red","lime","yellow","blue"}
-	for i, bar := range(graph.bars) {
+	for _, bar := range(graph.bars) {
 		var j int = 0
 		for j < bar_w {
 			var h int = 0
 			for h < bar.y *bar_h {
-				var c = Coord{x: bar.base + j, y: 1+h, color:color_names[i%graph.nbr_col]}
+				var c = Coord{x: bar.base + j, y: 1+h, color:bar.color}
 				coords = append(coords, c)	
 				h++
 			}

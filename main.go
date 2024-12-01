@@ -12,6 +12,12 @@ func main() {
 		fmt.Println("Specify a filename")
 		os.Exit(1)
 	}
+	var sorted bool = false
+	for _, arg := range(os.Args) {
+		if arg == "-s" {
+			sorted = true
+		}
+	}
 	var filepath string = os.Args[1]
 	var sep string = ";"
 	file, err := os.ReadFile(filepath)
@@ -29,7 +35,7 @@ func main() {
 		os.Exit(1)
 	}
 	sc_w, sc_h := screen.Size()
-	var g Graph = create_graph(string(file), sep)
+	var g Graph = create_graph(string(file), sep, sorted)
 	var max_h int = max_height(g)
 	var bar_h int = bar_height(max_h, sc_h)
 	var bar_w int = bar_width(g, sc_w)
