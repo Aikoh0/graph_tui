@@ -34,29 +34,16 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%v\n", e)
 		os.Exit(1)
 	}
-	sc_w, sc_h := screen.Size()
-	var g Graph = create_graph(string(file), sep, sorted)
-	var max_h int = max_height(g)
-	var bar_h int = bar_height(max_h, sc_h)
-	var bar_w int = bar_width(g, sc_w)
-
-	g = define_pos(g, bar_w)
-
-	var coords []Coord = generate_coords(g, bar_h, bar_w)
-
-	defStyle := tcell.StyleDefault.
-		Background(tcell.ColorBlack).
-		Foreground(tcell.ColorWhite)
 	for {
 		switch ev := screen.PollEvent().(type) {
 		case *tcell.EventResize:
 			screen.Clear()
-			emitStr(screen, defStyle, coords)
+			emitGraph(file, sep, sorted, screen)
 			screen.Sync()
 		case *tcell.EventKey:
 			if ev.Key() == tcell.KeyCtrlR {
 				screen.Clear()
-				emitStr(screen, defStyle, coords)
+				emitGraph(file, sep, sorted, screen)
 				screen.Sync()
 			}
 			if ev.Key() == tcell.KeyEscape {

@@ -8,13 +8,6 @@ import (
 )
 
 
-type Coord struct {
-	x int
-	y int
-	color string
-}
-
-
 type Bar struct {
 	x int
 	y int
@@ -30,14 +23,12 @@ type Graph struct {
 }
 
 
-// BLOCKING TODO: Handle bar color here w\ bar.color attr instead of coords.color
-// TODO:Color should be handled differently for sorted graphs
 // TODO 2 functions for clarity for sorted
 func create_graph(file string, sep string, sorted bool) (Graph) {
 	var rows []string = strings.Split(file, "\n")
 	rows = rows[:len(rows)-1]
 	var g = Graph{}
-	
+
 	color_names := []string{"maroon","green","olive","navy","purple","teal","silver","gray","red","lime","yellow","blue"}
 	if sorted {
 		var row_nbr int = 0
