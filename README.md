@@ -15,5 +15,6 @@ go build -o graph_tui
 ## Usage
 
 ```
-./graph_tui data.csv [OPTION] -s
+./graph_tui data.csv [OPTIONS]
+  -s sorted
 ```
