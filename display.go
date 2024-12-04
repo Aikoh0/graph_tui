@@ -5,8 +5,6 @@ import (
 )
 
 
-
-
 type Coord struct {
 	x int
 	y int
