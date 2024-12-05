@@ -62,16 +62,16 @@ func bar_graph(rows []string, sep string, g Graph, color_names []string) (Graph)
 	return g
 }
 
-// TODO 2 functions for clarity for sorted
-func create_graph(file string, sep string, sorted bool) (Graph) {
+
+func create_graph(file string, sep string, graph_type string) (Graph) {
 	var rows []string = strings.Split(file, "\n")
 	rows = rows[:len(rows)-1]
 	var g = Graph{}
 	color_names := []string{"maroon","green","olive","navy","purple","teal","silver","gray","red","lime","yellow","blue"}
-	// Switch on type
-	if sorted {
+	switch graph_type {
+		case "sort_bar":
 		g = sorted_bargraph(rows, sep, g, color_names)
-	} else {
+		default:
 		g = bar_graph(rows, sep, g, color_names)
 	}
 	return g

@@ -61,9 +61,9 @@ func generate_coords(graph Graph, bar_h int, bar_w int) ([]Coord) {
 }
 
 
-func emitGraph(file []byte, sep string, sorted bool, screen tcell.Screen) {
+func emitGraph(file []byte, sep string, graph_type string, screen tcell.Screen) {
 	sc_w, sc_h := screen.Size()
-	var g Graph = create_graph(string(file), sep, sorted)
+	var g Graph = create_graph(string(file), sep, graph_type)
 	var max_h int = max_height(g)
 	var bar_h int = bar_height(max_h, sc_h)
 	var bar_w int = bar_width(g, sc_w)

@@ -12,10 +12,10 @@ func main() {
 		fmt.Println("Specify a filename")
 		os.Exit(1)
 	}
-	var sorted bool = false
+	var graph_type string = "bar"
 	for _, arg := range(os.Args) {
 		if arg == "-s" {
-			sorted = true
+			graph_type = "sort_bar"
 		}
 	}
 	var filepath string = os.Args[1]
@@ -38,12 +38,12 @@ func main() {
 		switch ev := screen.PollEvent().(type) {
 		case *tcell.EventResize:
 			screen.Clear()
-			emitGraph(file, sep, sorted, screen)
+			emitGraph(file, sep, graph_type, screen)
 			screen.Sync()
 		case *tcell.EventKey:
 			if ev.Key() == tcell.KeyCtrlR {
 				screen.Clear()
-				emitGraph(file, sep, sorted, screen)
+				emitGraph(file, sep, graph_type, screen)
 				screen.Sync()
 			}
 			if ev.Key() == tcell.KeyEscape {
