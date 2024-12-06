@@ -14,8 +14,11 @@ func main() {
 	}
 	var graph_type string = "bar"
 	for _, arg := range(os.Args) {
-		if arg == "-s" {
+		if arg == "-sb" {
 			graph_type = "sort_bar"
+		}
+		if arg == "-s" {
+			graph_type = "scatter"
 		}
 	}
 	var filepath string = os.Args[1]

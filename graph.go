@@ -63,6 +63,26 @@ func bar_graph(rows []string, sep string, g Graph, color_names []string) (Graph)
 }
 
 
+func scatter_plot(rows []string, sep string, g Graph, color_names []string) (Graph) {
+	for i, _ := range(rows) {
+		var cols []string = strings.Split(rows[i], sep)
+		cols = cols[1:]
+		for j, col := range(cols) {
+			g.nbr_col = len(cols)
+			var color = color_names[j%g.nbr_col]
+			var val, err = strconv.Atoi(col)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			var bar = Bar{x: i, y: val, color: color}
+			g.bars = append(g.bars, bar)
+		}
+		i++
+	}
+	return g
+}
+
 func create_graph(file string, sep string, graph_type string) (Graph) {
 	var rows []string = strings.Split(file, "\n")
 	rows = rows[:len(rows)-1]
@@ -71,6 +91,8 @@ func create_graph(file string, sep string, graph_type string) (Graph) {
 	switch graph_type {
 		case "sort_bar":
 		g = sorted_bargraph(rows, sep, g, color_names)
+		case "scatter":
+			g = scatter_plot(rows, sep, g, color_names)
 		default:
 		g = bar_graph(rows, sep, g, color_names)
 	}

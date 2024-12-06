@@ -43,18 +43,26 @@ func bar_height(max_h int, screen_h int) (int) {
 }
 
 
-func generate_coords(graph Graph, bar_h int, bar_w int) ([]Coord) {
+func generate_coords(graph Graph, bar_h int, bar_w int, graph_type string) ([]Coord) {
 	var coords []Coord
-	for _, bar := range(graph.bars) {
-		var j int = 0
-		for j < bar_w {
-			var h int = 0
-			for h < bar.y * bar_h {
-				var c = Coord{x: bar.base + j, y: 1+h, color:bar.color}
-				coords = append(coords, c)	
-				h++
+	switch (graph_type) {
+	case "scatter":
+		for _, bar := range(graph.bars) {
+			var c = Coord{x: bar.base, y: 1+ bar.y, color: bar.color}
+			coords = append(coords, c)
+		}
+	default:
+		for _, bar := range(graph.bars) {
+			var j int = 0
+			for j < bar_w {
+				var h int = 0
+				for h < bar.y * bar_h {
+					var c = Coord{x: bar.base + j, y: 1 + h, color: bar.color}
+					coords = append(coords, c)	
+					h++
+				}
+				j++
 			}
-			j++
 		}
 	}
 	return coords
@@ -70,7 +78,7 @@ func emitGraph(file []byte, sep string, graph_type string, screen tcell.Screen) 
 
 	g = define_pos(g, bar_w)
 
-	var coords []Coord = generate_coords(g, bar_h, bar_w)
+	var coords []Coord = generate_coords(g, bar_h, bar_w, graph_type)
 	defStyle := tcell.StyleDefault.
 		Background(tcell.ColorBlack).
 		Foreground(tcell.ColorWhite)
